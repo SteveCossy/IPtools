@@ -1,0 +1,10 @@
+/var/lib/tund-manager/broadcast.jsonl {
+    missingok
+#    notifempty
+    size 30k
+    yearly
+    create 0777 root root
+#    dateext
+    rotate 8
+    su root root
+}

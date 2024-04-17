@@ -1,0 +1,20 @@
+127.0.0.1	localhost
+127.0.1.1	n2
+
+# The following lines are desirable for IPv6 capable hosts
+::1     ip6-localhost ip6-loopback
+fe00::0 ip6-localnet
+ff00::0 ip6-mcastprefix
+ff02::1 ip6-allnodes
+ff02::2 ip6-allrouters
+
+2020:abcd::212:4b00:1ca0:fc09 n1
+2020:abcd::212:4b00:1ca0:ff12 n2
+2020:abcd::212:4b00:1ca0:fc79 n3
+2020:abcd::212:4b00:1ca0:f99c n4
+2020:abcd::212:4b00:1caa:40e4 n5
+2020:abcd::212:4b00:1ca0:fcef n6
+2020:abcd::212:4b00:1caa:409b n7
+2020:abcd::212:4b00:1ca0:fc52 n8
+2020:abcd::212:4b00:1caa:36ac n9
+2020:abcd::212:4b00:1caa:3680 n10
