@@ -7,22 +7,28 @@
 # sudo crontab -e
 # ... add this line to the end of the existing crontab file:
 # */30 * * * * /home/jetson/IPtools/fieldPing.sh
+#
+# The results can be viewed with:
+# cat <outputPath>
+# where outputPath is a concatination of the output USB, Folder, and File below
+# eg cat /media/jetson/KINGSTON/networking/pingTest
+#
 
 outputUSB=/media/jetson/KINGSTON
 outputFolder=/networking
-outputFile=pingTest
+outputFile=/pingTest
 
 outputPath=$outputUSB$outputFolder$outputFile
 
-if [ -d $outputUSB ]
+if [ ! -d $outputUSB ]
 then
     echo USB device not found
 else
 
     # Create a new folder if necessary.  No error message if it doesn't work
-    mkdir -p $outputUSB$outputFolder
+    sudo mkdir -p $outputUSB$outputFolder
 
-    echo -n Connectivity check from `hostname` at `date` >> $outputPath
+    echo Connectivity check from `hostname` at `date` | sudo tee -a $outputPath
 
     for node in $(seq 1 10) ;
        do
@@ -31,9 +37,11 @@ else
           then RESULT=works
           else RESULT=failed
        fi
-       echo -n Node $node: $RESULT ;
+       echo -n "Node $node: $RESULT; " | sudo tee -a $outputPath
 
     done
-echo
+
+echo | sudo tee -a $outputPath
+echo | sudo tee -a $outputPath
 
 fi
