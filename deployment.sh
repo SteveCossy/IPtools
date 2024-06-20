@@ -79,7 +79,7 @@ waitingStill=true
 # Debug
 # echo ${waiting[@]}
 
-while waitingStill
+while $waitingStill
 do
    for node in $nodes ;
       do
