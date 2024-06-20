@@ -73,29 +73,40 @@ for node in $nodes ;
    do
    waiting[ $node ]=true
    done
+waitingStill=true
 
 # Debug
-echo ${waiting[@]}
+# echo ${waiting[@]}
 
-for node in $nodes ;
-   do
-   if ${waiting[$node]} 
-      then
-      echo -n "Testing n$node, "
-      ping6 -c 1 -w 3 n$node >/dev/null
-      if [ $? -eq 0 ]
-#      if [ $node -eq 5 ] # debug
+while waitingStill
+do
+   for node in $nodes ;
+      do
+      if ${waiting[$node]} 
          then
-         waiting[ $node ]=false
-         echo
-         echo n$node found\!
-         echo
-         timestamp=`date +%H:%M`
-         Report="$Report, $timestamp-n$node," 
+         echo -n "Testing n$node, "
+         ping6 -c 1 -w 3 n$node >/dev/null
+         if [ $? -eq 0 ]
+   #      if [ $node -eq 5 ] # debug
+            then
+            waiting[ $node ]=false
+            echo
+            echo n$node found\!
+            echo
+            timestamp=`date +%H:%M`
+            Report="$Report, $timestamp-n$node" 
+         fi
       fi
-   fi
+      done
+   echo 
+   waitingStill=false
+   for node in $nodes ;
+   do
+      if waiting[ $node ]
+         then waitingStill=true
+      fi
    done
-echo 
+done
 
 echo $Report | tee -a $outputPathLocal
 
