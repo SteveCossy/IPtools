@@ -29,8 +29,6 @@ outputPathLocal=$outputLocal$outputFolder$outputFile
 
 mkdir -p $outputLocal$outputFolder
 
-echo Connectivity check from `hostname` at `date` | sudo tee -a $outputPath
-
 # Wait for the network to be available - not required for this script
 ip address | grep 2020
 RESULT=$?
@@ -44,7 +42,7 @@ RESULT=0
 while [ $RESULT -eq 1 ]
 do
    if [ $TIME -eq 0 ]
-       then echo Local IP address not found, waiting | sudo tee -a $outputPath
+       then echo Local IP address not found, waiting
    fi
    ip address | grep 2020
    RESULT=$?
@@ -79,6 +77,7 @@ for node in $nodes ;
          timestamp=`date +%H:%M`
          Report=$Report, timestamp:n$node found, 
       fi
+   fi
    done
 echo 
 
