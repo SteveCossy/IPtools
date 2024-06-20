@@ -1,0 +1,99 @@
+# Ping all nodes on the SfTI network (TI Board interface) once
+#
+# Steve Cosgrove 17 April 2024    Modified from oncePing.sh to reduce output and place it on Jetson USB storage
+#
+# This file should be downloaded to ~/IPtools/ and permissions changed so we can run it
+#
+# cd ~/IPtools
+# wget https://raw.githubusercontent.com/SteveCossy/IPtools/master/fieldPing.sh
+# chmod a+x fieldping.sh
+#
+# The following lines can be used to run this script every 30 minutes
+# sudo crontab -e
+# ... add this line to the end of the existing crontab file:
+# */2 * * * * /home/jetson/IPtools/pingRecord
+#
+# The results can be viewed with:
+# cat <outputPath>
+# where outputPath is a concatination of the output USB, Folder, and File below
+# eg cat /media/jetson/KINGSTON/networking/pingTest
+#
+
+outputUSB=/media/jetson/KINGSTON
+outputLocal=/home/jetson
+outputFolder=/networking
+outputFile=/pingTest
+
+timestamp=`date +%F,%H:%M`
+
+outputPathUSB=$outputUSB$outputFolder$outputFile
+outputPathLocal=$outputLocal$outputFolder$outputFile
+
+if [ ! -d $outputUSB ]
+then
+    echo USB device not found
+    USBfound=false
+else
+    USBfound=true
+fi
+
+echo USB = $outputPathUSB, found = $USBfound
+echo Local = $outputPathLocal
+
+# Create a new folder if necessary.  No error message if the folder doesn't work
+
+mkdir -p $outputLocal$outputFolder
+
+if $USBfound
+   then sudo mkdir -p $outputUSB$outputFolder
+fi
+
+echo Connectivity check from `hostname` at `date` | sudo tee -a $outputPath
+
+# Wait for the network to be available - not required for this script
+# ip address | grep 2020
+# RESULT=$?
+#    TIME=0
+#    INTERVAL=3
+#    threshold=240
+
+#    while [ $RESULT -eq 1 ]
+#    do
+#      if [ $TIME -eq 0 ]
+#          then echo Local IP address not found, waiting | sudo tee -a $outputPath
+#      fi
+#      ip address | grep 2020
+#      RESULT=$?
+#      echo Been waiting for $TIME seconds
+#      sleep $INTERVAL
+#      TIME=`expr $TIME + $INTERVAL`
+#      if [ $TIME -gt $threshold ]
+#          then RESULT=0
+#      fi
+#    done
+
+Report=$timestamp
+if ! $USBfound
+   then Report=$Report"(NoUSB)"
+fi
+
+for node in $(seq 1 10) ;
+   do
+   echo -n "n$node, "
+   ping6 -c 1 -w 3 n$node >/dev/null
+   if [ $? -eq 0 ]
+      then Result=works
+      else Result=failed
+   fi
+   Report=$Report,n$node=$Result
+#   echo -n "Node $node: $RESULT; " | sudo tee -a $outputPath
+
+done
+echo 
+
+echo $Report | tee -a $outputPathLocal
+if $USBfound
+   then echo $Report | sudo tee -a $outputPathUSB
+fi
+
+
