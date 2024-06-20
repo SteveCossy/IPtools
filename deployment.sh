@@ -8,21 +8,16 @@
 # wget https://raw.githubusercontent.com/SteveCossy/IPtools/master/deployment.sh
 # chmod a+x deployment.sh
 #
-# The following lines can be used to run this script every 30 minutes
-# sudo crontab -e
-# ... add this line to the end of the existing crontab file:
-# */2 * * * * /home/jetson/IPtools/deployment.sh
-#
-# The results can be viewed with:
-# cat <outputPath>
-# where outputPath is a concatination of the output USB, Folder, and File below
-# eg cat /media/jetson/KINGSTON/networking/pingTest
-#
+# This script should work from any connected node.
+# It is recommended that another computer, such as a Raspberry Pi, be used to run this script
+# The computer will need:
+# * TI communications board
+# * a /etc/hosts file that includes IPv6 addresses of nodes  That list can be downloaded from here:
+#   https://gitlab.ecs.vuw.ac.nz/stevecos/sfti_network_notes/-/blob/1f9b3c4853ec59f4c4cd3da5645f0dd1ba16cf1f/hosts-field_nodes
+
 
 # List of nodes being deployed
 nodes=" 1 2 3 4 5 6 7 8 9 10 "
-
-
 
 outputLocal=$HOME
 outputFolder=/networking
