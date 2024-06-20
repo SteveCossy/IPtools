@@ -29,7 +29,7 @@ outputPathLocal=$outputLocal$outputFolder$outputFile
 
 mkdir -p $outputLocal$outputFolder
 
-# Wait for the network to be available - not required for this script
+# Wait for the network to be available on this computer
 ip address | grep 2020
 RESULT=$?
 TIME=0
@@ -37,7 +37,7 @@ INTERVAL=3
 threshold=240
 
 # Debug - comment out for real run
-RESULT=0
+# RESULT=0
 
 while [ $RESULT -eq 1 ]
 do
@@ -54,28 +54,38 @@ do
    fi
 done
 
+# Network is available. We can get on with it ...
+
+# Remember when this deployment was started
 timestamp=`date +%F,%H:%M`
 Report=$timestamp
 
+# waiting will be a boolean array as we check nodes
+# We will start by waiting for all of them ...
+declare -a waiting
 for node in $nodes ;
    do
-   waiting$node=true
-   fi
+   waiting[ $node ]=true
+   done
+
+# Debug
+echo ${waiting[@]}
 
 for node in $nodes ;
    do
-   if waiting$node 
+   if ${waiting[$node]} 
       then
       echo -n "Testing n$node, "
       ping6 -c 1 -w 3 n$node >/dev/null
       if [ $? -eq 0 ]
+#      if [ $node -eq 5 ] # debug
          then
-         waiting$node=false
+         waiting[ $node ]=false
          echo
          echo n$node found\!
          echo
          timestamp=`date +%H:%M`
-         Report=$Report, timestamp:n$node found, 
+         Report="$Report, $timestamp-n$node," 
       fi
    fi
    done
