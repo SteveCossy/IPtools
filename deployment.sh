@@ -65,6 +65,7 @@ done
 # Remember when this deployment was started
 timestamp=`date +%F,%H:%M`
 Report=$timestamp
+echo -n $Report >> $outputPathLocal
 
 # waiting will be a boolean array as we check nodes
 # We will start by waiting for all of them ...
@@ -95,6 +96,7 @@ do
             echo
             timestamp=`date +%H:%M`
             Report="$Report, $timestamp-n$node" 
+            echo -n ", $timestamp-n$node" >> $outputPathLocal
          fi
       fi
       done
@@ -106,8 +108,12 @@ do
          then waitingStill=true
       fi
    done
+   if waitingStill
+      then read -t 5 -p "Repeating the test in 5 seconds. <CTRL>-C to exit."
+   fi
 done
 
-echo $Report | tee -a $outputPathLocal
+# echo $Report # This 'report' is written to file as it is built
+echo "" >> $outputPathLocal
 
 
