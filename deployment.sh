@@ -15,9 +15,15 @@
 # * a /etc/hosts file that includes IPv6 addresses of nodes  That list can be downloaded from here:
 #   https://gitlab.ecs.vuw.ac.nz/stevecos/sfti_network_notes/-/blob/1f9b3c4853ec59f4c4cd3da5645f0dd1ba16cf1f/hosts-field_nodes
 
+# Check for command line list of nodes, or check all ten
+# Parameter subsitution from: https://www.cyberciti.biz/tips/bash-shell-parameter-substitution-2.html
+nodes="$*"
+nodes=${nodes:-"1 2 3 4 5 6 7 8 9 10"}
+nodes=" $nodes "
 
-# List of nodes being deployed
-nodes=" 1 2 3 4 5 6 7 8 9 10 "
+echo Checking these nodes: $nodes
+echo Syntax\: $0 \<space sparated list of nodes\>
+read -p "Hit enter to continue, or <CTRL> C to start again."
 
 outputLocal=$HOME
 outputFolder=/networking
