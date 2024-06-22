@@ -25,9 +25,10 @@ echo Checking these nodes: $nodes
 echo Syntax\: $0 \<space sparated list of nodes\>
 read -p "Hit enter to continue, or <CTRL> C to start again."
 
+timestamp=`date +%F_%H-%M`
 outputLocal=$HOME
 outputFolder=/networking
-outputFile=/pingTest
+outputFile=/deploy-$timestamp
 
 outputPathLocal=$outputLocal$outputFolder$outputFile
 
