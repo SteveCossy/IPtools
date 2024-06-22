@@ -22,7 +22,7 @@
 outputUSB=/media/jetson/KINGSTON
 outputLocal=/home/jetson
 outputFolder=/networking
-outputFile=/pingTest
+outputFile=/pingTest_$HOSTNAME
 
 timestamp=`date +%F,%H:%M`
 
