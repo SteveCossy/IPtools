@@ -6,8 +6,8 @@
 #
 # cd ~/IPtools
 # wget https://raw.githubusercontent.com/SteveCossy/IPtools/master/pingTraceAll.sh
-# wget https://raw.githubusercontent.com/SteveCossy/IPtools/master/pingCount.sh
-# chmod a+x pingTraceAll.sh pingCount.sh
+# wget https://raw.githubusercontent.com/SteveCossy/IPtools/master/pingTrace.sh
+# chmod a+x pingTraceAll.sh pingTrace.sh
 #
 # The following lines can be used to run this script every 30 minutes
 # sudo crontab -e
