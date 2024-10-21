@@ -29,7 +29,7 @@ pingTraceFile=/home/jetson/IPtools/pingTrace.sh
 
 timestamp=`date +%F,%H:%M`
 
-outputPathUSB=$outputUSB$outputFolder$outputFile
+  outputPathUSB=$outputUSB$outputFolder$outputFile
 outputPathLocal=$outputLocal$outputFolder$outputFile
 
 if [ ! -d $outputUSB ]
@@ -51,7 +51,7 @@ if $USBfound
    then sudo mkdir -p $outputUSB$outputFolder
 fi
 
-echo Connectivity check from `hostname` at `date` | sudo tee -a $outputPath
+# echo Connectivity check from `hostname` at `date` | sudo tee -a $outputPath
 
 # Wait for the network to be available - not required for this script
 # ip address | grep 2020
@@ -82,12 +82,13 @@ if $USBfound
 fi
 
 echo $reportFile
+echo $timestamp >>$reportFile
 
-for node in $(seq 1 10) ;
+for NODE in $(seq 1 10) ;
    do
 
-   echo processing n$node
-   $pingTraceFile $node $reportFile
+   echo processing n$NODE
+   $pingTraceFile  n$NODE $reportFile
 
    done
 echo 
