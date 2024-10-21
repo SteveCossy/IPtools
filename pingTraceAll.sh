@@ -1,17 +1,18 @@
-# Ping all nodes on the SfTI network (TI Board interface) once
+# Trace route to all nodes on the SfTI network (TI Board interface) using pingCount.sh which uses multiple pings
 #
-# Steve Cosgrove 17 April 2024    Modified from oncePing.sh to reduce output and place it on Jetson USB storage
+# Steve Cosgrove 21 October 2024
 #
-# This file should be downloaded to ~/IPtools/ and permissions changed so we can run it
+# Both files should be downloaded to ~/IPtools/ and permissions changed so we can run it
 #
 # cd ~/IPtools
-# wget https://raw.githubusercontent.com/SteveCossy/IPtools/master/fieldPing.sh
-# chmod a+x fieldping.sh
+# wget https://raw.githubusercontent.com/SteveCossy/IPtools/master/pingTraceAll.sh
+# wget https://raw.githubusercontent.com/SteveCossy/IPtools/master/pingCount.sh
+# chmod a+x pingTraceAll.sh pingCount.sh
 #
 # The following lines can be used to run this script every 30 minutes
 # sudo crontab -e
 # ... add this line to the end of the existing crontab file:
-# */2 * * * * /home/jetson/IPtools/pingRecord
+# */30 * * * * /home/jetson/IPtools/pingTraceAll.sh
 #
 # The results can be viewed with:
 # cat <outputPath>
@@ -22,7 +23,9 @@
 outputUSB=/media/jetson/KINGSTON
 outputLocal=/home/jetson
 outputFolder=/networking
-outputFile=/pingTest_$HOSTNAME
+outputFile=/pingTrace_$HOSTNAME
+
+pingTraceFile=/home/jetson/IPtools/pingTrace.sh
 
 timestamp=`date +%F,%H:%M`
 
@@ -72,28 +75,21 @@ echo Connectivity check from `hostname` at `date` | sudo tee -a $outputPath
 #      fi
 #    done
 
-Report=$timestamp
-if ! $USBfound
-   then Report=$Report"(NoUSB)"
+# echo $Report | tee -a $outputPathLocal
+if $USBfound
+   then reportFile=$outputPathUSB
+   else reportFile=$outputPathLocal
 fi
+
+echo $reportFile
 
 for node in $(seq 1 10) ;
    do
-   echo -n "n$node, "
-   ping6 -c 1 -w 3 n$node >/dev/null
-   if [ $? -eq 0 ]
-      then Result=works
-      else Result=failed
-   fi
-   Report=$Report,n$node=$Result
-#   echo -n "Node $node: $RESULT; " | sudo tee -a $outputPath
 
-done
+   echo processing n$node
+   $pingTraceFile $node $reportFile
+
+   done
 echo 
-
-echo $Report | tee -a $outputPathLocal
-if $USBfound
-   then echo $Report | sudo tee -a $outputPathUSB
-fi
 
 
