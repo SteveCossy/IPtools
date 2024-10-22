@@ -1,6 +1,6 @@
 # Installation for pingTrace utility
 
-### Note that this utility will not work from the boarder router.
+### Note that this utility will not work from the border router.
 
 Follow install instructions from file: https://github.com/SteveCossy/IPtools/blob/master/pingTraceAll.sh
 The output should look very close to this example:
