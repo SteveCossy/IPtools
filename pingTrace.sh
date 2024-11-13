@@ -19,14 +19,13 @@ for COUNT in {1..10}
     # -n don't resolve hostnames (save time, as we don't use them)
     # -w wait for this number of seconds for a reply
     # -t TTL - stop trying after this number of hops
-    ping -c 1 -nw 4 $thisNode -t$COUNT &>/dev/null
+    ping -c 3 -nw 15 $thisNode -t$COUNT &>/dev/null
     # '$?' is the return code from ping. It will equal number of
     #   successful pings. Will be equal to or less than -c value
     if [ $? == 1 ]
       then
         echo -n $COUNT,  >>$reportFile
       else
-        # echo -n $COUNT hop$PURAL \| >>$reportFile # This line prints results on one line
         echo    $COUNT hop$PURAL      >>$reportFile # This line prints one result per line
         break
       fi

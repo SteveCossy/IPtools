@@ -25,7 +25,7 @@ outputLocal=/home/jetson
 outputFolder=/networking
 outputFile=/pingTrace_$HOSTNAME
 
-pingTraceFile=/home/jetson/IPtools/pingTrace.sh
+pingTraceFile=/home/odroid/IPtools/pingTrace.sh
 
 timestamp=`date +%F,%H:%M`
 
